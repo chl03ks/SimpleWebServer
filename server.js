@@ -12,7 +12,7 @@ var mimeTypes = {
     jpeg: 'image/jpeg',
     jpg: 'image/jpeg',
     png: 'image/png',
-    javascript: 'text/javascript',
+    js: 'text/javascript',
     css: 'text/css'
 };
 
@@ -36,7 +36,7 @@ http.createServer(function (req, res) {
     // Check if file/directory
 
     if(stats.isFile()){
-        var mimeType = mimeType[path.extname(fileName).split('.').reverse()[0]];
+        var mimeType = mimeTypes[path.extname(fileName).split('.').reverse()[0]];
         res.writeHead(200, {'Content-Type': mimeType});
 
         var fileStream = fs.createReadStream(fileName);
