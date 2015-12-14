@@ -4,8 +4,18 @@
   "description": "a simple web server in nodejs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "nodemon": "nodemon server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gvsdan/SimpleWebServer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gvsdan/SimpleWebServer/issues"
+  },
+  "homepage": "https://github.com/gvsdan/SimpleWebServer#readme"
 }
