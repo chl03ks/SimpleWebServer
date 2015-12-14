@@ -1,14 +1,55 @@
+/* Modules */
 var http = require('http');
+var url = require('url');
+var path = require('path');
+var fs = require('fs');
 
-var port = 8000;
+
+var port = 3000;
+// mime types object
+var mimeTypes = {
+    html: 'text/html',
+    jpeg: 'image/jpeg',
+    jpg: 'image/jpeg',
+    png: 'image/png',
+    javascript: 'text/javascript',
+    css: 'text/css'
+};
 
 http.createServer(function (req, res) {
 
-    res.writeHead(200,{'Content-Type': 'text/plain'});
-    res.end('Hello World!');
+    var uri = url.parse(req.url).pathname;
+    var fileName = path.join(process.cwd(), unescape(uri));
+    var stats;
 
-}).listen(port, function () {
+    console.log('Loading ' + uri);
 
-    console.log('Server Running in port' + port);
+    try {
+        stats = fs.lstatSync(fileName);
+    } catch (e) {
+        res.writeHead(404, {'Content-Type': 'text/plain'});
+        res.write('404 Not Found');
+        res.end();
+        return;
+    }
 
-});
+    // Check if file/directory
+
+    if(stats.isFile()){
+        var mimeType = mimeType[path.extname(fileName).split('.').reverse()[0]];
+        res.writeHead(200, {'Content-Type': mimeType});
+
+        var fileStream = fs.createReadStream(fileName);
+        fileStream.pipe(res);
+    } else if (stats.isDirectory()){
+        res.writeHead(302, {
+            'location': 'index.html',
+        });
+        res.end();
+    }else {
+        res.writeHead(500, {'Content-Type': 'text/plain'});
+        res.write('500 Inernal Error');
+        res.end();
+    }
+
+}).listen(port);
